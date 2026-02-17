@@ -19,6 +19,7 @@ koin = "4.1.1"
 coroutines = "1.10.2"
 moshi = "1.15.1"
 okhttp = "5.3.2"
+navigation = "2.9.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -66,6 +67,9 @@ converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.r
 
 #retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+
+# Navigation
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 
 [plugins]

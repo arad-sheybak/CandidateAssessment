@@ -67,6 +67,9 @@ dependencies {
     //okhttp
     implementation(libs.bundles.okhttp)
 
+    //navigation
+    implementation(libs.androidx.navigation.compose)
+
 
     
     testImplementation(libs.junit)
