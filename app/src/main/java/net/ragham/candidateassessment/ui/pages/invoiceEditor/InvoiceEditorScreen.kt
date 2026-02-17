@@ -11,31 +11,37 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
+import kotlinx.coroutines.flow.collectLatest
+import net.ragham.candidateassessment.navigation.Screen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun InvoiceEditorScreen() {
-    InvoiceEditorUI()
-}
+fun InvoiceEditorScreen(
+    viewModel: InvoiceEditorViewModel = koinViewModel(),
+    onAddProductClicked: () -> Unit = {},
+    navController: NavController
+) {
+    val uiState by viewModel.uiState.collectAsState()
 
-@Composable
-@Preview
-private fun InvoiceEditorUI() {
-    var sellerName by remember { mutableStateOf("") }
-    var sellerMobile by remember { mutableStateOf("") }
-    var buyerName by remember { mutableStateOf("") }
-    var buyerMobile by remember { mutableStateOf("") }
-
+    LaunchedEffect(Unit) {
+        viewModel.eventShared.collectLatest { event ->
+            when (event) {
+                is InvoiceEditorEvent.NavigateToInvoiceAddItem -> {
+                    navController.navigate(Screen.InvoiceItemAdd.route)
+                }
+            }
+        }
+    }
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -68,9 +74,9 @@ private fun InvoiceEditorUI() {
         )
 
         OutlinedTextField(
-            value = sellerName,
+            value = uiState.sellerName,
             onValueChange = {
-                sellerName = it
+                viewModel.handleUiEvent(InvoiceEditorUiEvent.SellerNameChanged(sellerName = it))
             },
             label = {
                 Text("نام و نام خانوادگی فروشنده")
@@ -85,9 +91,9 @@ private fun InvoiceEditorUI() {
         )
 
         OutlinedTextField(
-            value = sellerMobile,
+            value = uiState.sellerMobile,
             onValueChange = {
-                sellerMobile = it
+                viewModel.handleUiEvent(InvoiceEditorUiEvent.SellerMobileChanged(sellerMobile = it))
             },
             label = { Text("موبایل فروشنده") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
@@ -115,9 +121,9 @@ private fun InvoiceEditorUI() {
         )
 
         OutlinedTextField(
-            value = buyerName,
+            value = uiState.buyerName,
             onValueChange = {
-                buyerName = it
+                viewModel.handleUiEvent(InvoiceEditorUiEvent.BuyerNameChanged(buyerName = it))
             },
             label = {
                 Text("نام و نام خانوادگی خریدار")
@@ -132,9 +138,9 @@ private fun InvoiceEditorUI() {
         )
 
         OutlinedTextField(
-            value = buyerMobile,
+            value = uiState.buyerMobile,
             onValueChange = {
-                buyerMobile = it
+                viewModel.handleUiEvent(InvoiceEditorUiEvent.BuyerMobileChanged(buyerMobile = it))
             },
             label = { Text("موبایل خریدار") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
@@ -145,11 +151,16 @@ private fun InvoiceEditorUI() {
 
                 }
         )
-        Button(onClick = {
-            //navigate to InvoiceItemAddScreen
-            
-        },
-            modifier = Modifier.constrainAs(btnAddProduct){
+        Button(
+            onClick = {
+                //navigate to InvoiceItemAddScreen
+                viewModel.handleUiEvent(InvoiceEditorUiEvent.AddProductClicked)
+                if (uiState.isFormValid) {
+                    onAddProductClicked()
+                }
+
+            },
+            modifier = Modifier.constrainAs(btnAddProduct) {
                 top.linkTo(buyerMobileInput.bottom, margin = 10.dp)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)

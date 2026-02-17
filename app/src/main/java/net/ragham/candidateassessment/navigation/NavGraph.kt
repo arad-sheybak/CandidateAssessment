@@ -11,14 +11,18 @@ import net.ragham.candidateassessment.ui.pages.invoices.InvoicesScreen
 import net.ragham.candidateassessment.ui.pages.products.ProductsScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController,modifier: Modifier){
-    NavHost(navController = navController, startDestination = Screen.InvoiceEditor.route, modifier = modifier){
+fun AppNavHost(navController: NavHostController, modifier: Modifier) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.InvoiceEditor.route,
+        modifier = modifier
+    ) {
         composable(Screen.InvoiceEditor.route) {
             //define composable screen
-            InvoiceEditorScreen()
+            InvoiceEditorScreen(navController = navController)
         }
 
-        composable(Screen.InvoiceItemAdd.route){
+        composable(Screen.InvoiceItemAdd.route) {
             InvoiceItemAddScreen()
         }
 
