@@ -1,11 +1,11 @@
 package net.ragham.candidateassessment.navigation
 
 sealed class Screen(val route:String){
-    object InvoiceEditorScreen :Screen("invoiceEditor")
+    object InvoiceEditor :Screen("invoiceEditor")
 
-    object InvoiceItemAddScreen:Screen("invoiceItemAdd")
+    object InvoiceItemAdd:Screen("invoiceItemAdd")
 
-    object InvoicesScreen: Screen("invoices")
+    object Invoices: Screen("invoices")
 
-    object ProductsScreen: Screen("products")
+    object Products: Screen("products")
 }

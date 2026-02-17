@@ -5,23 +5,28 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import net.ragham.candidateassessment.ui.pages.invoiceEditor.InvoiceEditorScreen
+import net.ragham.candidateassessment.ui.pages.invoiceItemAddScreen.InvoiceItemAddScreen
+import net.ragham.candidateassessment.ui.pages.invoices.InvoicesScreen
+import net.ragham.candidateassessment.ui.pages.products.ProductsScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController,modifier: Modifier){
-    NavHost(navController = navController, startDestination = Screen.InvoiceEditorScreen.route, modifier = modifier){
-        composable(Screen.InvoiceEditorScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.InvoiceEditor.route, modifier = modifier){
+        composable(Screen.InvoiceEditor.route) {
             //define composable screen
+            InvoiceEditorScreen()
         }
 
-        composable(Screen.InvoiceItemAddScreen.route){
-
+        composable(Screen.InvoiceItemAdd.route){
+            InvoiceItemAddScreen()
         }
 
-        composable(Screen.InvoicesScreen.route) {
-
+        composable(Screen.Invoices.route) {
+            InvoicesScreen()
         }
-        composable(Screen.ProductsScreen.route) {
-
+        composable(Screen.Products.route) {
+            ProductsScreen()
         }
     }
 }
